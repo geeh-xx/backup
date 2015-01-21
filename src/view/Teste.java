@@ -13,7 +13,7 @@ public class Teste {
 	        String host="54.94.195.160";
 	        String user="ubuntu";
             String privateKey = "C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem";
-	        String command1="pgrep 737";
+	        String command1="mysqldump -h localhost -u root -p -R --opt bitnami_magento > backup/backup5.sql";
 	        try{
 	             
 	            java.util.Properties config = new java.util.Properties(); 
@@ -40,11 +40,13 @@ public class Teste {
 	                System.out.print(new String(tmp, 0, i));
 	              }
 	              if(channel.isClosed()){
-	                System.out.println("exit-status: "+channel.getExitStatus()+channel.isClosed());
-	                System.out.println("nao saiu");
+	            	  System.out.println("exit-status: "+channel.getExitStatus()+ ""+"Sessão: "+channel.isClosed());
+	                System.out.println("saiu");
 	                break;	
 	              }else{
-	            	  System.out.println("saiu");
+		                System.out.println("exit-status: "+channel.getExitStatus()+ ""+"Sessão: "+channel.isClosed());
+	            	  System.out.println("não saiu");
+
 	              }
 	              try{Thread.sleep(1000);}catch(Exception ee){}
 	            }
