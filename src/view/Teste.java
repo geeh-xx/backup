@@ -1,6 +1,7 @@
 package view;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -29,9 +30,14 @@ public class Teste {
 	            ((ChannelExec)channel).setCommand(command1);
 	            channel.setInputStream(null);
 	            ((ChannelExec)channel).setErrStream(System.err);
-	             
+	            OutputStream out=channel.getOutputStream();
+
 	            InputStream in=channel.getInputStream();
 	            channel.connect();
+	            
+	            out.write(("bitnami1").getBytes());
+	            out.flush();
+
 	            byte[] tmp=new byte[1024];
 	            while(true){
 	              while(in.available()>0){
