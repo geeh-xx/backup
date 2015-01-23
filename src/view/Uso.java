@@ -4,6 +4,7 @@ import model.Banco;
 import model.Usuario;
 import controller.Bacukp;
 import controller.Conexao;
+import controller.Download;
 
 public class Uso {
 
@@ -11,7 +12,7 @@ public class Uso {
 		Bacukp bacukp = new Bacukp();
 		Usuario usuario = new Usuario();
 		usuario.setChave("C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem");
-		usuario.setHost("54.94.195.160");
+		usuario.setHost("angawrap.com.br");
 		usuario.setSenha(null);
 		usuario.setUsuario("ubuntu");
 		
@@ -23,10 +24,20 @@ public class Uso {
 		banco.setSenha("bitnami1");
 		banco.setUsuario("root");
 		
+		
+		
 		Conexao conexao = new Conexao(usuario);
-		conexao.conectar();
+		conexao.conectar("shell");
 		bacukp.mySql(banco);
 		conexao.desconectar();
+		
+		Conexao conexao2 = new Conexao(usuario);
+		conexao2.conectar("sftp");
+		Download download = new Download();
+		download.dowloadBackup(conexao2.channelSftp);
+		conexao2.desconectar();
+	
+		
 		
 	}
 }

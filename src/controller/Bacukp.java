@@ -8,7 +8,7 @@ import model.Banco;
 
 public class Bacukp {
 	
-	public String DataDeHoje(){
+	public static final String DataDeHoje(){
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date();
 		return dateFormat.format(date);	
@@ -16,13 +16,20 @@ public class Bacukp {
 	
 	public void mySql(Banco banco){
 		
-        Conexao.ps.println("mysqldump -h "+banco.getHost()+" -u "+banco.getUsuario()+" -p -R --opt "+banco.getDatabase()+"> backup/"+DataDeHoje()+".sql");
+        Conexao.ps.println("mysqldump -h "+banco.getHost()+" -u "+banco.getUsuario()+" -p -R --opt "+banco.getDatabase()+"> ./"+DataDeHoje()+".sql");
+        System.out.println("realizando Backup...");
         try{
    		 Thread.sleep(1000);
    	 	}catch(Exception ee){
-   		 
+   	 		ee.printStackTrace();
    	 	}
         Conexao.ps.println(banco.getSenha());
+        try{
+      		Thread.sleep(4*60*1000);
+      	 	}catch(Exception ee){
+      	 		ee.printStackTrace();
+      	 }	 
+        System.out.println("Backup realizado com sucesso!");
 	}
 	
 }

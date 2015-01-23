@@ -3,7 +3,6 @@ package view;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Date;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSch;

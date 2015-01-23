@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Date;
 
 import model.Usuario;
 
 import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -21,6 +21,7 @@ public class Conexao {
 	private Session session = null;
 	private Channel channel = null;
 	private OutputStream ops = null;
+	public static ChannelSftp channelSftp = null;
 	private String host;
     private String user;
     private String privateKey ;
@@ -33,7 +34,7 @@ public class Conexao {
 		this.privateKey = usuario.getChave();
 	}
 	
-	public void conectar(){
+	public void conectar(String tipo){
 		try {
 			config = new java.util.Properties();
 			config.put("StrictHostKeyChecking", "no");
@@ -42,11 +43,15 @@ public class Conexao {
 			session=jsch.getSession(user, host, PORTA);
 			session.setConfig(config);
 			session.connect();
-			channel=session.openChannel("shell");
+			channel=session.openChannel(tipo);
 			ops = channel.getOutputStream();
 			ps = new PrintStream(ops, true);
 			channel.connect();
-			System.out.println("Connectado com sucesso!");
+			if (tipo.equals("sftp")) {
+				channelSftp = (ChannelSftp)channel;
+			}
+			System.out.println("Conectando...");
+			System.out.println("\nConnectado com sucesso!");
 			
 		} catch (JSchException e) {
 			e.printStackTrace();
@@ -60,43 +65,31 @@ public class Conexao {
 	public void desconectar(){
 		try {
 		  ps.close();
-          System.out.println(new Date().toString());
           InputStream in;
-		
-			in = channel.getInputStream();
-		
+          in = channel.getInputStream();
           byte[] bt=new byte[1024];
+          while(true){
+        	  while(in.available()>0){
+        		  int i=in.read(bt, 0, 1024);
+        		  if(i<0)
+        			  break;
+        		  String str=new String(bt, 0, i);
+        		  //displays the output of the command executed.
+        		  System.out.print(str);
 
 
-          while(true)
-          {
-
-          while(in.available()>0)
-          {
-          int i=in.read(bt, 0, 1024);
-          if(i<0)
-           break;
-             String str=new String(bt, 0, i);
-           //displays the output of the command executed.
-             System.out.print(str);
-
-
-          }
-          if(channel.isClosed())
-          {
-
-              break;
-         }
-
-          try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-          
-          channel.disconnect();
-          session.disconnect();   
+        	  }
+        	  if(channel.isClosed()){
+        		  break;
+        	  }
+        	  try {
+        		  Thread.sleep(1000);
+        	  }catch (InterruptedException e) {
+        		  // TODO Auto-generated catch block
+        		  e.printStackTrace();
+        	  }
+        	  channel.disconnect();
+        	  session.disconnect();   
           }
 		}catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -104,5 +97,6 @@ public class Conexao {
 		}
          
 	}
+	
 	
 }
