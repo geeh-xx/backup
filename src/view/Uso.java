@@ -12,7 +12,7 @@ public class Uso {
 		Bacukp bacukp = new Bacukp();
 		Usuario usuario = new Usuario();
 		usuario.setChave("C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem");
-		usuario.setHost("angawrap.com.br");
+		usuario.setHost("54.94.195.160");
 		usuario.setSenha(null);
 		usuario.setUsuario("ubuntu");
 		
@@ -34,7 +34,7 @@ public class Uso {
 		Conexao conexao2 = new Conexao(usuario);
 		conexao2.conectar("sftp");
 		Download download = new Download();
-		download.dowloadBackup(conexao2.channelSftp);
+		download.dowloadBackup(conexao2.channelSftp,"C:\\tmp");
 		conexao2.desconectar();
 	
 		

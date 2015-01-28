@@ -1,39 +1,37 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import java.awt.BorderLayout;
-
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.JSeparator;
 import javax.swing.JPasswordField;
-import javax.swing.JButton;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Banco;
 import model.Usuario;
 import controller.Bacukp;
 import controller.Conexao;
 import controller.Download;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Choice;
-import javax.swing.JFileChooser;
+import javax.swing.JProgressBar;
 
 public class Dados {
 
-	private JFrame frmBackup;
+	public static JFrame frmBackup;
 	private JTextField fielServerHost;
 	private JTextField fieldServerUser;
 	private JLabel lblDadosDoServidor;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
-	private JPasswordField fieldHostPassword;
-	private JTextField fielServerKeyPar;
+	private JPasswordField fieldServerPassword;
 	private JTextField fieldServerPorta;
 	private JLabel label;
 	private JTextField fieldBdHost;
@@ -42,6 +40,11 @@ public class Dados {
 	private JLabel label_2;
 	private JPasswordField fieldBdPassword;
 	private JTextField fieldBdBase;
+	private JTextField fieldServerKayPar;
+	private JTextField FieldBdDownload;
+	Bacukp bacukp;
+	Usuario usuario;
+	Banco banco;
 
 	/**
 	 * Launch the application.
@@ -71,6 +74,13 @@ public class Dados {
 	 */
 	private void initialize() {
 		frmBackup = new JFrame();
+		frmBackup
+				.setIconImage(Toolkit
+						.getDefaultToolkit()
+						.getImage(
+								Dados.class
+										.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
+		frmBackup.setResizable(false);
 		frmBackup.setTitle("Backup 1.0");
 		frmBackup.setBounds(100, 100, 444, 560);
 		frmBackup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,7 +96,7 @@ public class Dados {
 		fielServerHost.setColumns(10);
 
 		JLabel lblNewLabel_1 = new JLabel("Senha:");
-		lblNewLabel_1.setBounds(10, 106, 38, 20);
+		lblNewLabel_1.setBounds(10, 106, 56, 20);
 		frmBackup.getContentPane().add(lblNewLabel_1);
 
 		fieldServerUser = new JTextField();
@@ -114,18 +124,13 @@ public class Dados {
 		lblDadosDoBanco.setBounds(117, 223, 194, 33);
 		frmBackup.getContentPane().add(lblDadosDoBanco);
 
-		fieldHostPassword = new JPasswordField();
-		fieldHostPassword.setBounds(73, 107, 86, 20);
-		frmBackup.getContentPane().add(fieldHostPassword);
+		fieldServerPassword = new JPasswordField();
+		fieldServerPassword.setBounds(73, 107, 86, 20);
+		frmBackup.getContentPane().add(fieldServerPassword);
 
 		JLabel lblNewLabel_4 = new JLabel("Host:");
 		lblNewLabel_4.setBounds(10, 43, 46, 18);
 		frmBackup.getContentPane().add(lblNewLabel_4);
-
-		fielServerKeyPar = new JTextField();
-		fielServerKeyPar.setColumns(10);
-		fielServerKeyPar.setBounds(73, 139, 86, 20);
-		frmBackup.getContentPane().add(fielServerKeyPar);
 
 		fieldServerPorta = new JTextField();
 		fieldServerPorta.setText("22");
@@ -152,44 +157,77 @@ public class Dados {
 		frmBackup.getContentPane().add(fieldBdUser);
 
 		label_2 = new JLabel("Senha:");
-		label_2.setBounds(10, 330, 38, 20);
+		label_2.setBounds(10, 330, 56, 20);
 		frmBackup.getContentPane().add(label_2);
 
 		fieldBdPassword = new JPasswordField();
 		fieldBdPassword.setBounds(70, 330, 86, 20);
 		frmBackup.getContentPane().add(fieldBdPassword);
 
+		fieldServerKayPar = new JTextField();
+		fieldServerKayPar.setColumns(10);
+		fieldServerKayPar.setBounds(73, 137, 86, 20);
+		frmBackup.getContentPane().add(fieldServerKayPar);
+
+		FieldBdDownload = new JTextField();
+		FieldBdDownload.setColumns(10);
+		FieldBdDownload.setBounds(135, 393, 86, 20);
+		frmBackup.getContentPane().add(FieldBdDownload);
+		
+		
+		final JLabel labelDownload = new JLabel("Status do Donwload");
+		labelDownload.setBounds(20, 431, 155, 14);
+		labelDownload.setVisible(false);
+		frmBackup.getContentPane().add(labelDownload);
+		
 		JButton btnGo = new JButton("Let's Go!");
 		btnGo.addActionListener(new ActionListener() {
 
+			@SuppressWarnings({ "static-access", "deprecation" })
 			public void actionPerformed(ActionEvent arg0) {
-				Bacukp bacukp = new Bacukp();
-				Usuario usuario = new Usuario();
-				usuario.setChave("C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem");
-				usuario.setHost("angawrap.com.br");
-				usuario.setSenha(null);
-				usuario.setUsuario("ubuntu");
+				usuario = new Usuario();
+				banco = new Banco();
+				bacukp = new Bacukp();
+				// usuario.setChave("C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem");
+				// usuario.setHost("angawrap.com.br");
+				// usuario.setSenha(null);
+				// usuario.setUsuario("ubuntu");
+				//
+				// banco.setBanco(null);
+				// banco.setDatabase("bitnami_magento");
+				// banco.setHost("localhost");
+				// banco.setOperacao(null);
+				// banco.setSenha("bitnami1");
+				// banco.setUsuario("root");
 
-				Banco banco = new Banco();
+				usuario.setHost(fielServerHost.getText());
+				usuario.setChave(fieldServerKayPar.getText());
+				usuario.setSenha(null);
+				usuario.setUsuario(fieldServerUser.getText());
+
 				banco.setBanco(null);
-				banco.setDatabase("bitnami_magento");
-				banco.setHost("localhost");
+				banco.setDatabase(fieldBdBase.getText());
+				banco.setHost(fieldBdHost.getText());
+				banco.setPorta(Integer.parseInt(fieldServerPorta.getText()));
 				banco.setOperacao(null);
-				banco.setSenha("bitnami1");
-				banco.setUsuario("root");
+				banco.setSenha(fieldBdPassword.getText());
+				banco.setUsuario(fieldBdUser.getText());
 
 				Conexao conexao = new Conexao(usuario);
 				conexao.conectar("shell");
 				bacukp.mySql(banco);
 				conexao.desconectar();
-
+				
 				Conexao conexao2 = new Conexao(usuario);
 				conexao2.conectar("sftp");
 				Download download = new Download();
-				download.dowloadBackup(conexao2.channelSftp);
+				labelDownload.setVisible(true);
+				download.dowloadBackup(conexao2.channelSftp,FieldBdDownload.getText());
 				conexao2.desconectar();
 			}
 		});
+		
+		
 		btnGo.setBounds(329, 456, 89, 23);
 		frmBackup.getContentPane().add(btnGo);
 
@@ -206,15 +244,44 @@ public class Dados {
 		fieldBdBase.setBounds(70, 361, 86, 20);
 		frmBackup.getContentPane().add(fieldBdBase);
 
-		JButton btnSelecionar = new JButton("Selecionar...");
+		JButton btnSelecionar = new JButton("...");
 		btnSelecionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				Seletor select = new Seletor();
-				select.setVisible(true);
+				JFileChooser file = new JFileChooser();
+				file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int i = file.showSaveDialog(null);
+				if (i == 1) {
+					FieldBdDownload.setText("");
+				} else {
+					File arquivo = file.getSelectedFile();
+					FieldBdDownload.setText(arquivo.getAbsolutePath());
+				}
 			}
 		});
-		btnSelecionar.setBounds(134, 391, 107, 23);
+		btnSelecionar.setBounds(226, 392, 14, 20);
 		frmBackup.getContentPane().add(btnSelecionar);
+
+		JButton button = new JButton("...");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser file = new JFileChooser();
+				FileFilter filter = new FileNameExtensionFilter(".pem", "pem");
+				file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				file.setFileFilter(filter);
+				int i = file.showSaveDialog(null);
+				if (i == 1) {
+					fieldServerKayPar.setText("");
+				} else {
+					File arquivo = file.getSelectedFile();
+					fieldServerKayPar.setText(arquivo.getAbsolutePath());
+				}
+			}
+		});
+		button.setBounds(161, 137, 14, 19);
+		frmBackup.getContentPane().add(button);
+
+		
 	}
+
+
 }

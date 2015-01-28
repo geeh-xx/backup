@@ -10,7 +10,6 @@ import model.Usuario;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public class Conexao {
@@ -53,12 +52,9 @@ public class Conexao {
 			System.out.println("Conectando...");
 			System.out.println("\nConnectado com sucesso!");
 			
-		} catch (JSchException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Erro ao conectar");
-		}catch (Exception e) {
-	        e.printStackTrace();
-	        System.out.println("Erro ao conectar");
 		}
 	}
 	
