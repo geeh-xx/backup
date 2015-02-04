@@ -14,7 +14,6 @@ public class ProgressMonitor implements SftpProgressMonitor{
 	    private int percent;
 	    private int lastDisplayedPercent; 
 		private JProgressBar progressBar;
-
 	    
 		ProgressMonitor() {
 	        count = 0;
@@ -43,16 +42,28 @@ public class ProgressMonitor implements SftpProgressMonitor{
 	    private void status() {
 	        if (lastDisplayedPercent <= percent - 10) {
 	            System.out.println(src + ": " + percent + "% " + ((long) count) + "/" + ((long) max));
+	            Monitor monitor = new Monitor();
+//						if (percent <100) {
+//			            	progressBar = new JProgressBar(0,90);
+//			        		progressBar.setBounds(22, 456, 153, 23);
+//			        		progressBar.setValue(percent);
+//			        		progressBar.setStringPainted(true);
+//							Dados.frmBackup.getContentPane().add(progressBar);
+//						}
 	            lastDisplayedPercent = percent;
-	            if (percent <100) {
-	            	progressBar = new JProgressBar(0,90);
-	        		progressBar.setBounds(22, 456, 153, 23);
-	        		progressBar.setValue(percent);
-	        		progressBar.setStringPainted(true);
-					Dados.frmBackup.getContentPane().add(progressBar);
-	        		
-				}
 	        }
+	    }
+	    
+	    class Monitor extends Thread{
+	    	public void run(){
+				if (percent <100) {
+            	progressBar = new JProgressBar(0,90);
+        		progressBar.setBounds(22, 456, 153, 23);
+        		progressBar.setValue(percent);
+        		progressBar.setStringPainted(true);
+				Dados.frmBackup.getContentPane().add(progressBar);
+			}
+	    	}
 	    }
 	    
 }

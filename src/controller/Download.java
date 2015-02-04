@@ -8,16 +8,16 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.SftpProgressMonitor;
 
 public class Download {
 
 	
 	public Download() {
-		// TODO Auto-generated constructor stub
-		}
+		
+	}
 		 
 		/**
+		 * Classe responsavel pelo download do arquivo 
 		* @param args
 		*/
 		public void dowloadBackup(ChannelSftp channelSftp,String localDownload) {
@@ -26,6 +26,7 @@ public class Download {
 				//channelSftp.cd(SFTPWORKINGDIR);
 				byte[] buffer = new byte[1024];
 				BufferedInputStream bis = new BufferedInputStream(channelSftp.get(Bacukp.DataDeHoje()+".sql", new ProgressMonitor()));
+				channelSftp.rm(Bacukp.DataDeHoje()+".sql");
 				File newFile = new File(localDownload+"/"+Bacukp.DataDeHoje()+".sql");
 				OutputStream os = new FileOutputStream(newFile);
 				BufferedOutputStream bos = new BufferedOutputStream(os);
