@@ -27,8 +27,8 @@ public class Bacukp {
 //   	 	}
 //        Conexao.ps.println(banco.getSenha());
         try{
-        	Thread.sleep(1000);
-      		//Thread.sleep(4*60*1000);
+        	//Thread.sleep(1000);
+      		Thread.sleep(4*60*1000);
       	 	}catch(Exception ee){
       	 		ee.printStackTrace();
       	 }	 

@@ -45,6 +45,7 @@ public class Dados {
 	Bacukp bacukp;
 	Usuario usuario;
 	Banco banco;
+	private JProgressBar progressBar = new JProgressBar(0, 90);;
 
 	/**
 	 * Launch the application.
@@ -67,6 +68,56 @@ public class Dados {
 	 */
 	public Dados() {
 		initialize();
+	}
+	
+	private void realizaDownload(final JLabel labelDownload) {
+		new Thread(new Runnable() {
+			
+			public void run() {
+				progressBar.setValue(0);
+				usuario = new Usuario();
+				banco = new Banco();
+				bacukp = new Bacukp();
+				// usuario.setChave("C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem");
+				// usuario.setHost("angawrap.com.br");
+				// usuario.setSenha(null);
+				// usuario.setUsuario("ubuntu");
+				//
+				// banco.setBanco(null);
+				// banco.setDatabase("bitnami_magento");
+				// banco.setHost("localhost");
+				// banco.setOperacao(null);
+				// banco.setSenha("bitnami1");
+				// banco.setUsuario("root");
+
+				usuario.setHost(fielServerHost.getText());
+				usuario.setChave(fieldServerKayPar.getText());
+				usuario.setSenha(null);
+				usuario.setUsuario(fieldServerUser.getText());
+
+				banco.setBanco(null);
+				banco.setDatabase(fieldBdBase.getText());
+				banco.setHost(fieldBdHost.getText());
+				banco.setPorta(Integer.parseInt(fieldServerPorta.getText()));
+				banco.setOperacao(null);
+				banco.setSenha(fieldBdPassword.getText());
+				banco.setUsuario(fieldBdUser.getText());
+
+				Conexao conexao = new Conexao(usuario);
+				conexao.conectar("shell");
+				bacukp.mySql(banco);
+				conexao.desconectar();
+				
+				Conexao conexao2 = new Conexao(usuario);
+				conexao2.conectar("sftp");
+				Download download = new Download(progressBar);
+				labelDownload.setVisible(true);
+				download.dowloadBackup(conexao2.channelSftp,FieldBdDownload.getText());
+				conexao2.desconectar();
+				
+			}
+		}).start();
+		
 	}
 
 	/**
@@ -183,48 +234,11 @@ public class Dados {
 		JButton btnGo = new JButton("Let's Go!");
 		btnGo.addActionListener(new ActionListener() {
 
-			@SuppressWarnings({ "static-access", "deprecation" })
 			public void actionPerformed(ActionEvent arg0) {
-				usuario = new Usuario();
-				banco = new Banco();
-				bacukp = new Bacukp();
-				// usuario.setChave("C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem");
-				// usuario.setHost("angawrap.com.br");
-				// usuario.setSenha(null);
-				// usuario.setUsuario("ubuntu");
-				//
-				// banco.setBanco(null);
-				// banco.setDatabase("bitnami_magento");
-				// banco.setHost("localhost");
-				// banco.setOperacao(null);
-				// banco.setSenha("bitnami1");
-				// banco.setUsuario("root");
-
-				usuario.setHost(fielServerHost.getText());
-				usuario.setChave(fieldServerKayPar.getText());
-				usuario.setSenha(null);
-				usuario.setUsuario(fieldServerUser.getText());
-
-				banco.setBanco(null);
-				banco.setDatabase(fieldBdBase.getText());
-				banco.setHost(fieldBdHost.getText());
-				banco.setPorta(Integer.parseInt(fieldServerPorta.getText()));
-				banco.setOperacao(null);
-				banco.setSenha(fieldBdPassword.getText());
-				banco.setUsuario(fieldBdUser.getText());
-
-				Conexao conexao = new Conexao(usuario);
-				conexao.conectar("shell");
-				bacukp.mySql(banco);
-				conexao.desconectar();
-				
-				Conexao conexao2 = new Conexao(usuario);
-				conexao2.conectar("sftp");
-				Download download = new Download();
-				labelDownload.setVisible(true);
-				download.dowloadBackup(conexao2.channelSftp,FieldBdDownload.getText());
-				conexao2.desconectar();
+				realizaDownload(labelDownload);
 			}
+
+			
 		});
 		
 		
@@ -260,6 +274,11 @@ public class Dados {
 		});
 		btnSelecionar.setBounds(226, 392, 14, 20);
 		frmBackup.getContentPane().add(btnSelecionar);
+		
+		progressBar.setBounds(120,420, 150,30);
+		progressBar.setVisible(false);
+		frmBackup.getContentPane().add(progressBar);
+		
 
 		JButton button = new JButton("...");
 		button.addActionListener(new ActionListener() {
