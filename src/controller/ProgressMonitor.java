@@ -53,13 +53,6 @@ public class ProgressMonitor implements SftpProgressMonitor {
 			else {
 				monitor.atualiza();
 			}
-			// if (percent <100) {
-			// progressBar = new JProgressBar(0,90);
-			// progressBar.setBounds(22, 456, 153, 23);
-			// progressBar.setValue(percent);
-			// progressBar.setStringPainted(true);
-			// Dados.frmBackup.getContentPane().add(progressBar);
-			// }
 			lastDisplayedPercent = percent;
 		}
 	}

@@ -49,41 +49,40 @@ public class Download {
 			int total = 0;
 			long inicial = new Date().getTime();
 			Mensagem mensagem = new Mensagem(textPane);
-			mensagem.setMensagem("Iniciando download do backup...");
-			mensagem.exibeMensagem();
-			//System.out.println("Iniciando download do backup...");
+			mensagem.exibeMensagem("Iniciando download do backup...");
 			while ((readCount = bis.read(buffer)) > 0) {
 				to = new Date().getTime() - inicial;
 				to = (to / 60000) % 60;
 				minutos = String.format("%02d", to);
 				total = Integer.parseInt(minutos);
 				bos.write(buffer, 0, readCount);
-				// if (total == 0) {
-				// System.out.println("Download em andamento...");
-				// }
-				//
-				// if (total == 5) {
-				// System.out.println("Download ainda em andamento...");
-				// }
-				// if (total == 15) {
-				// System.out.println("Demorando ne?");
-				// }
-				// if (total == 20) {
-				// System.out.println("Meio grande esse backup...");
-				// }
-				// if (total > 20) {
-				// System.out.println("Vai tomar um café,pq pelo visto,vai demorar e muito");
-				// }
+				int contador = 0;
+//				 if (total == 0) {
+//				 System.out.println("Download em andamento...");
+//				 }
+//				
+//				 if (total == 5) {
+//				 System.out.println("Download ainda em andamento...");
+//				 }
+//				 if (total == 15) {
+//				 System.out.println("Demorando ne?");
+//				 }
+//				 if (total == 20) {
+//				 System.out.println("Meio grande esse backup...");
+//				 }
+//				 if (total > 20) {
+//				 System.out.println("Vai tomar um café,pq pelo visto,vai demorar e muito");
+//				 }
 			}
 			
-			mensagem.setMensagem("Download do Backup Realizado com Sucesso \n"
+			mensagem.exibeMensagem("Download do Backup Realizado com Sucesso \n"
 									+" Tempo gasto foi de : " + total + " min");
-			mensagem.exibeMensagem();
-			//System.out.println("Download do Backup Realizado com Sucesso");
-			//System.out.println("Tempo gasto foi de : " + total + " min");
 			bis.close();
 			bos.close();
 		} catch (Exception ex) {
+			Mensagem mensagem = new Mensagem(textPane);
+			mensagem.exibeMensagem("Erro ao Realizar Download do Backup\n"
+									+"Favor verificar os dados e a internet e tentar novamente");
 			ex.printStackTrace();
 		}
 

@@ -60,18 +60,12 @@ public class Conexao {
 			if (tipo.equals("sftp")) {
 				channelSftp = (ChannelSftp)channel;
 			}
-			mensagem.setMensagem("Conectando...\n"+
+			mensagem.exibeMensagem("Conectando...\n"+
 			                        "Connectado com sucesso!");
-			mensagem.exibeMensagem();
-			//System.out.println("Conectando...");
-			//System.out.println("\nConnectado com sucesso!");
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			Mensagem mensagem = new Mensagem(textPane);
-			mensagem.setMensagem("Erro ao conectar");
-			mensagem.exibeMensagem();
-			//System.out.println("Erro ao conectar");
+			mensagem.exibeMensagem("Erro ao conectar");
 		}
 	}
 	

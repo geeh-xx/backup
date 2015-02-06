@@ -80,7 +80,7 @@ public class Dados {
 				textPane.setText("");
 				usuario = new Usuario();
 				banco = new Banco();
-				bacukp = new Bacukp();
+				
 
 				usuario.setHost(fielServerHost.getText());
 				usuario.setChave(fieldServerKayPar.getText());
@@ -97,6 +97,7 @@ public class Dados {
 
 				Conexao conexao = new Conexao(usuario,textPane);
 				conexao.conectar("shell");
+				bacukp = new Bacukp(textPane);
 				bacukp.mySql(banco);
 				conexao.desconectar();
 				

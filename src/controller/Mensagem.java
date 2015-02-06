@@ -4,7 +4,6 @@ import javax.swing.JTextPane;
 
 public class Mensagem {
 
-	private String mensagem;
 	private JTextPane textPane;
 	
 	
@@ -12,18 +11,11 @@ public class Mensagem {
 		this.textPane = textPane;
 	}
 	
-	public void exibeMensagem(){
+	public void exibeMensagem(String mensagem){
 		textPane.setText(mensagem);
 		textPane.setVisible(true);
 		textPane.setBounds(10, 487, 418, 79);
 	}
 
-	public String getMensagem() {
-		return mensagem;
-	}
 
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
-	}
-	
 }
