@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import javax.swing.JTextPane;
+
 import model.Usuario;
 
 import com.jcraft.jsch.Channel;
@@ -25,12 +27,20 @@ public class Conexao {
     private String user;
     private String privateKey ;
 	public static final int PORTA = 22;
+	private JTextPane textPane;
     
-    
+	
 	public Conexao(Usuario usuario){
 		this.host = usuario.getHost();
 		this.user = usuario.getUsuario();
 		this.privateKey = usuario.getChave();
+	}
+	
+	public Conexao(Usuario usuario,JTextPane textPane){
+		this.host = usuario.getHost();
+		this.user = usuario.getUsuario();
+		this.privateKey = usuario.getChave();
+		this.textPane = textPane;
 	}
 	
 	public void conectar(String tipo){
@@ -46,15 +56,22 @@ public class Conexao {
 			ops = channel.getOutputStream();
 			ps = new PrintStream(ops, true);
 			channel.connect();
+			Mensagem mensagem = new Mensagem(textPane);
 			if (tipo.equals("sftp")) {
 				channelSftp = (ChannelSftp)channel;
 			}
-			System.out.println("Conectando...");
-			System.out.println("\nConnectado com sucesso!");
+			mensagem.setMensagem("Conectando...\n"+
+			                        "Connectado com sucesso!");
+			mensagem.exibeMensagem();
+			//System.out.println("Conectando...");
+			//System.out.println("\nConnectado com sucesso!");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Erro ao conectar");
+			Mensagem mensagem = new Mensagem(textPane);
+			mensagem.setMensagem("Erro ao conectar");
+			mensagem.exibeMensagem();
+			//System.out.println("Erro ao conectar");
 		}
 	}
 	

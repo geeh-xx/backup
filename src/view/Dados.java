@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
@@ -21,11 +22,11 @@ import model.Usuario;
 import controller.Bacukp;
 import controller.Conexao;
 import controller.Download;
-import javax.swing.JProgressBar;
+import javax.swing.JTextPane;
 
 public class Dados {
 
-	public static JFrame frmBackup;
+	private JFrame frmBackup;
 	private JTextField fielServerHost;
 	private JTextField fieldServerUser;
 	private JLabel lblDadosDoServidor;
@@ -46,6 +47,7 @@ public class Dados {
 	Usuario usuario;
 	Banco banco;
 	private JProgressBar progressBar = new JProgressBar(0, 90);;
+	private JTextPane textPane = new JTextPane();
 
 	/**
 	 * Launch the application.
@@ -75,20 +77,10 @@ public class Dados {
 			
 			public void run() {
 				progressBar.setValue(0);
+				textPane.setText("");
 				usuario = new Usuario();
 				banco = new Banco();
 				bacukp = new Bacukp();
-				// usuario.setChave("C:\\Users\\rangel.souza\\Downloads\\magentoSaoPaulo.pem");
-				// usuario.setHost("angawrap.com.br");
-				// usuario.setSenha(null);
-				// usuario.setUsuario("ubuntu");
-				//
-				// banco.setBanco(null);
-				// banco.setDatabase("bitnami_magento");
-				// banco.setHost("localhost");
-				// banco.setOperacao(null);
-				// banco.setSenha("bitnami1");
-				// banco.setUsuario("root");
 
 				usuario.setHost(fielServerHost.getText());
 				usuario.setChave(fieldServerKayPar.getText());
@@ -103,14 +95,14 @@ public class Dados {
 				banco.setSenha(fieldBdPassword.getText());
 				banco.setUsuario(fieldBdUser.getText());
 
-				Conexao conexao = new Conexao(usuario);
+				Conexao conexao = new Conexao(usuario,textPane);
 				conexao.conectar("shell");
 				bacukp.mySql(banco);
 				conexao.desconectar();
 				
-				Conexao conexao2 = new Conexao(usuario);
+				Conexao conexao2 = new Conexao(usuario,textPane);
 				conexao2.conectar("sftp");
-				Download download = new Download(progressBar);
+				Download download = new Download(progressBar,textPane);
 				labelDownload.setVisible(true);
 				download.dowloadBackup(conexao2.channelSftp,FieldBdDownload.getText());
 				conexao2.desconectar();
@@ -133,7 +125,7 @@ public class Dados {
 										.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		frmBackup.setResizable(false);
 		frmBackup.setTitle("Backup 1.0");
-		frmBackup.setBounds(100, 100, 444, 560);
+		frmBackup.setBounds(100, 100, 444, 605);
 		frmBackup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBackup.getContentPane().setLayout(null);
 
@@ -242,7 +234,7 @@ public class Dados {
 		});
 		
 		
-		btnGo.setBounds(329, 456, 89, 23);
+		btnGo.setBounds(328, 420, 89, 23);
 		frmBackup.getContentPane().add(btnGo);
 
 		JLabel lblBase = new JLabel("Base:");
@@ -298,6 +290,12 @@ public class Dados {
 		});
 		button.setBounds(161, 137, 14, 19);
 		frmBackup.getContentPane().add(button);
+		
+	
+		textPane.setEditable(false);
+		textPane.setVisible(true);
+		textPane.setBounds(10, 487, 418, 79);
+		frmBackup.getContentPane().add(textPane);
 
 		
 	}

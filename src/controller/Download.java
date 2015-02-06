@@ -8,19 +8,21 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import javax.swing.JProgressBar;
+import javax.swing.JTextPane;
 
 import com.jcraft.jsch.ChannelSftp;
 
 public class Download {
 
 	private JProgressBar progressBar;
-
+	private JTextPane textPane;
 	public Download() {
 
 	}
 
-	public Download(JProgressBar progressBar) {
+	public Download(JProgressBar progressBar,JTextPane textPane) {
 		this.progressBar = progressBar;
+		this.textPane =  textPane;
 
 	}
 
@@ -46,7 +48,10 @@ public class Download {
 			String minutos;
 			int total = 0;
 			long inicial = new Date().getTime();
-			System.out.println("Iniciando download do backup...");
+			Mensagem mensagem = new Mensagem(textPane);
+			mensagem.setMensagem("Iniciando download do backup...");
+			mensagem.exibeMensagem();
+			//System.out.println("Iniciando download do backup...");
 			while ((readCount = bis.read(buffer)) > 0) {
 				to = new Date().getTime() - inicial;
 				to = (to / 60000) % 60;
@@ -70,8 +75,12 @@ public class Download {
 				// System.out.println("Vai tomar um café,pq pelo visto,vai demorar e muito");
 				// }
 			}
-			System.out.println("Download do Backup Realizado com Sucesso");
-			System.out.println("Tempo gasto foi de : " + total + " min");
+			
+			mensagem.setMensagem("Download do Backup Realizado com Sucesso \n"
+									+" Tempo gasto foi de : " + total + " min");
+			mensagem.exibeMensagem();
+			//System.out.println("Download do Backup Realizado com Sucesso");
+			//System.out.println("Tempo gasto foi de : " + total + " min");
 			bis.close();
 			bos.close();
 		} catch (Exception ex) {

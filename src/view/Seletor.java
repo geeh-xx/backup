@@ -10,6 +10,11 @@ import javax.swing.JFileChooser;
 
 public class Seletor extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4529691342611525762L;
+	
 	private JPanel contentPane;
 
 	/**

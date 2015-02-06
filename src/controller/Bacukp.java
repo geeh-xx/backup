@@ -4,8 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.jcraft.jsch.ChannelSftp;
-
 import model.Banco;
 
 public class Bacukp {
@@ -27,8 +25,8 @@ public class Bacukp {
 //   	 	}
 //        Conexao.ps.println(banco.getSenha());
         try{
-        	//Thread.sleep(1000);
-      		Thread.sleep(4*60*1000);
+        	Thread.sleep(1000);
+      		//Thread.sleep(4*60*1000);
       	 	}catch(Exception ee){
       	 		ee.printStackTrace();
       	 }	 

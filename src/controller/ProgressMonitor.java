@@ -2,8 +2,6 @@ package controller;
 
 import javax.swing.JProgressBar;
 
-import view.Dados;
-
 import com.jcraft.jsch.SftpProgressMonitor;
 
 public class ProgressMonitor implements SftpProgressMonitor {
