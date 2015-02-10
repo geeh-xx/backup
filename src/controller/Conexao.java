@@ -4,15 +4,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.swing.JTextPane;
 
+import util.Log;
+import util.Util;
 import model.Usuario;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+
+import componente.Mensagem;
 
 public class Conexao {
 
@@ -62,10 +68,24 @@ public class Conexao {
 			}
 			mensagem.exibeMensagem("Conectando...\n"+
 			                        "Connectado com sucesso!");
-		} catch (Exception e) {
-			e.printStackTrace();
-			Mensagem mensagem = new Mensagem(textPane);
-			mensagem.exibeMensagem("Erro ao conectar");
+		} catch (Exception ex) {
+			try {
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				ex.printStackTrace(pw);
+				pw.close();
+				sw.close();
+				Mensagem mensagem = new Mensagem(textPane);
+				mensagem.exibeMensagem(sw.getBuffer().toString());
+				ex.printStackTrace(new Log());
+				
+			} catch (Throwable e) {
+				
+				e.printStackTrace();
+				Util.alerta("Erro ao gerar arquivo de log", Util.ERRO);
+			}
+			Util.alerta("Erro ao conectar", Util.ERRO);
+			ex.printStackTrace();
 		}
 	}
 	

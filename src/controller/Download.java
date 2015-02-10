@@ -4,13 +4,21 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Date;
 
 import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 
+import util.Log;
+import util.Util;
+
 import com.jcraft.jsch.ChannelSftp;
+import componente.Mensagem;
+import componente.ProgressMonitor;
 
 public class Download {
 
@@ -30,6 +38,7 @@ public class Download {
 	 * Classe responsavel pelo download do arquivo
 	 * 
 	 * @param args
+	 * @throws IOException 
 	 */
 	public void dowloadBackup(ChannelSftp channelSftp, String localDownload) {
 
@@ -37,9 +46,9 @@ public class Download {
 			// channelSftp.cd(SFTPWORKINGDIR);
 			byte[] buffer = new byte[1024];
 			BufferedInputStream bis = new BufferedInputStream(channelSftp.get(
-					Bacukp.DataDeHoje() + ".sql", new ProgressMonitor(progressBar)));
-			channelSftp.rm(Bacukp.DataDeHoje() + ".sql");
-			File newFile = new File(localDownload + "/" + Bacukp.DataDeHoje()
+					Util.DataDeHoje() + ".sql", new ProgressMonitor(progressBar,textPane)));
+			channelSftp.rm(Util.DataDeHoje() + ".sql");
+			File newFile = new File(localDownload + "/" + Util.DataDeHoje()
 					+ ".sql");
 			OutputStream os = new FileOutputStream(newFile);
 			BufferedOutputStream bos = new BufferedOutputStream(os);
@@ -80,9 +89,24 @@ public class Download {
 			bis.close();
 			bos.close();
 		} catch (Exception ex) {
-			Mensagem mensagem = new Mensagem(textPane);
-			mensagem.exibeMensagem("Erro ao Realizar Download do Backup\n"
-									+"Favor verificar os dados e a internet e tentar novamente");
+			
+				try {
+					StringWriter sw = new StringWriter();
+					PrintWriter pw = new PrintWriter(sw);
+					ex.printStackTrace(pw);
+					pw.close();
+					sw.close();
+					Mensagem mensagem = new Mensagem(textPane);
+					mensagem.exibeMensagem(sw.getBuffer().toString());
+					ex.printStackTrace(new Log());
+				} catch (Throwable e) {
+					Util.alerta("Erro ao gerar arquivo de log", Util.ERRO);
+					e.printStackTrace();
+				}
+				
+				
+			Util.alerta("Erro ao Realizar Download do Backup\n"
+					+"Favor verificar os dados e a internet e tentar novamente", Util.ERRO);
 			ex.printStackTrace();
 		}
 

@@ -14,15 +14,16 @@ import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Banco;
 import model.Usuario;
+import util.Util;
 import controller.Bacukp;
 import controller.Conexao;
 import controller.Download;
-import javax.swing.JTextPane;
 
 public class Dados {
 
@@ -125,7 +126,7 @@ public class Dados {
 								Dados.class
 										.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		frmBackup.setResizable(false);
-		frmBackup.setTitle("Backup 1.0");
+		frmBackup.setTitle("Backup 1.3");
 		frmBackup.setBounds(100, 100, 444, 605);
 		frmBackup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBackup.getContentPane().setLayout(null);
@@ -228,7 +229,10 @@ public class Dados {
 		btnGo.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				realizaDownload(labelDownload);
+				if (verifica()) {
+					realizaDownload(labelDownload);
+				}
+				
 			}
 
 			
@@ -297,7 +301,42 @@ public class Dados {
 		textPane.setVisible(true);
 		textPane.setBounds(10, 487, 418, 79);
 		frmBackup.getContentPane().add(textPane);
+		
+	}
+	
+	private boolean verifica(){
+
+		if(fielServerHost.getText().equals("") || fielServerHost.getText()==null ||
+			fieldServerKayPar.getText().equals("")||fieldServerKayPar.getText()==null ||
+			fieldServerUser.getText().equals("")||fieldServerUser.getText()==null||
+			fieldBdBase.getText().equals("")||fieldBdBase.getText()==null||
+			fieldBdHost.getText().equals("")||fieldBdHost.getText()==null||
+			fieldServerPorta.getText().equals("")||fieldServerPorta.getText()==null||
+			fieldBdPassword.getText().equals("")||fieldBdPassword.getText()==null||
+			fieldBdUser.getText().equals("")||fieldBdUser.getText()==null||
+			FieldBdDownload.getText().equals("")||FieldBdDownload.getText()==null){
+			
+			
+			Util.alerta("Por favor,preencha todos os campos", Util.ALERTA);
+			return false;
+		}
+		return true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		
 	}
+	
 }
