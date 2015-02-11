@@ -1,0 +1,2 @@
+java.lang.NullPointerException
+	at teste.TesteLog.main(TesteLog.java:19)

@@ -6,10 +6,10 @@ import java.io.PrintWriter;
 
 public class Log extends PrintWriter {
 
-	public Log() throws Throwable {
+	public Log() throws Exception {
 		super(new FileWriter(
 				new File(
-						System.getProperty("user.dir")+"/log/log.txt"
+						System.getProperty("user.dir")+"//log.txt"
 					)
 				), 
 			true

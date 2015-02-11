@@ -13,10 +13,13 @@ import java.util.Date;
 import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 
+import org.apache.log4j.Logger;
+
 import util.Log;
 import util.Util;
 
 import com.jcraft.jsch.ChannelSftp;
+
 import componente.Mensagem;
 import componente.ProgressMonitor;
 
