@@ -13,13 +13,10 @@ import java.util.Date;
 import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 
-import org.apache.log4j.Logger;
-
 import util.Log;
 import util.Util;
 
 import com.jcraft.jsch.ChannelSftp;
-
 import componente.Mensagem;
 import componente.ProgressMonitor;
 
@@ -68,7 +65,7 @@ public class Download {
 				minutos = String.format("%02d", to);
 				total = Integer.parseInt(minutos);
 				bos.write(buffer, 0, readCount);
-				int contador = 0;
+//				int contador = 0;
 //				 if (total == 0) {
 //				 System.out.println("Download em andamento...");
 //				 }
@@ -87,8 +84,13 @@ public class Download {
 //				 }
 			}
 			
-			mensagem.exibeMensagem("Download do Backup Realizado com Sucesso \n"
-									+" Tempo gasto foi de : " + total + " min");
+			if (Util.verifica) {
+				mensagem.exibeMensagem("Download do Backup Realizado com Sucesso \n"
+						+" Tempo gasto foi de : " + total + " min");
+			}else{
+				mensagem.exibeMensagem("Erro ao fazer download do Backup");
+			}
+			
 			bis.close();
 			bos.close();
 		} catch (Exception ex) {
@@ -109,7 +111,7 @@ public class Download {
 				
 				
 			Util.alerta("Erro ao Realizar Download do Backup\n"
-					+"Favor verificar os dados e a internet e tentar novamente", Util.ERRO);
+					+"Local de Download invalido", Util.ERRO);
 			ex.printStackTrace();
 		}
 

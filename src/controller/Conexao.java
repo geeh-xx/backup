@@ -49,7 +49,7 @@ public class Conexao {
 		this.textPane = textPane;
 	}
 	
-	public void conectar(String tipo){
+	public boolean conectar(String tipo){
 		try {
 			config = new java.util.Properties();
 			config.put("StrictHostKeyChecking", "no");
@@ -68,6 +68,7 @@ public class Conexao {
 			}
 			mensagem.exibeMensagem("Conectando...\n"+
 			                        "Connectado com sucesso!");
+			return true;
 		} catch (Exception ex) {
 			try {
 				StringWriter sw = new StringWriter();
@@ -84,8 +85,10 @@ public class Conexao {
 				e.printStackTrace();
 				Util.alerta("Erro ao gerar arquivo de log", Util.ERRO);
 			}
-			Util.alerta("Erro ao conectar", Util.ERRO);
+			Util.alerta("Erro ao conectar no servidor\n"
+					+ "Verifique os dados e a internet e tente novamente.", Util.ERRO);
 			ex.printStackTrace();
+			return false;
 		}
 	}
 	

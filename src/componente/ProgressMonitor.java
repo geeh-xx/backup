@@ -3,6 +3,8 @@ package componente;
 import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 
+import util.Util;
+
 import com.jcraft.jsch.SftpProgressMonitor;
 
 public class ProgressMonitor implements SftpProgressMonitor {
@@ -40,9 +42,8 @@ public class ProgressMonitor implements SftpProgressMonitor {
 		count = 0;
 		percent = 0;
 		lastDisplayedPercent = 0;
-		status();
+		verificaDownload(max);
 	}
-
 	public boolean count(long count) {
 		this.count += count;
 		percent = (int) ((this.count / max) * 100.0);
@@ -55,20 +56,35 @@ public class ProgressMonitor implements SftpProgressMonitor {
 		status();
 	}
 
-	private void status() {
-		Mensagem mensagem = new Mensagem(textPane);
-		mensagem.exibeMensagem("Baixando "+String.valueOf((long)count) +" de "+String.valueOf((long)max));
-		if (lastDisplayedPercent <= percent - 1) {
-			System.out.println(src + ": " + percent + "% " + ((long) count)
-					+ "/" + ((long) max));
-			
-			if (monitor == null)
-				monitor = new Monitor();
-			else {
-				monitor.atualiza();
-			}
-			lastDisplayedPercent = percent;
+	private void verificaDownload(long max){
+		
+		if (max == 0) {
+			Util.alerta("Erro ao realizar Backup do banco\n"
+					+"Favor,verificar os dados e a internet e tente novamente", Util.ERRO);
+			Util.verifica =  false;
+		}else{
+			Util.verifica =  true;
+			Mensagem mensagem = new Mensagem(textPane);
+	        mensagem.exibeMensagem("Backup realizado com sucesso!");
+	        status();
 		}
+	
+	}
+	
+	private void status() {
+			Mensagem mensagem = new Mensagem(textPane);
+			mensagem.exibeMensagem("Baixando "+String.valueOf((long)count) +" de "+String.valueOf((long)max));
+			if (lastDisplayedPercent <= percent - 1) {
+				System.out.println(src + ": " + percent + "% " + ((long) count)
+						+ "/" + ((long) max));
+				
+				if (monitor == null)
+					monitor = new Monitor();
+				else {
+					monitor.atualiza();
+				}
+				lastDisplayedPercent = percent;
+			}
 	}
 
 	class Monitor {

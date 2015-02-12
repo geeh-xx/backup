@@ -34,7 +34,6 @@ public class Bacukp {
 	      	 	}catch(Exception ee){
 	      	 		ee.printStackTrace();
 	      	 }	 
-        mensagem.exibeMensagem("Backup realizado com sucesso!");
         }catch (Exception ex) {
   	      try {
 				StringWriter sw = new StringWriter();

@@ -10,7 +10,7 @@ public class Util {
 	
 	public static final int ERRO = JOptionPane.ERROR_MESSAGE;
 	public static final int ALERTA = JOptionPane.WARNING_MESSAGE;
-
+	public static boolean verifica = true;
 	
 	public static final String DataDeHoje(){
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

@@ -95,19 +95,22 @@ public class Dados {
 				banco.setOperacao(null);
 				banco.setSenha(fieldBdPassword.getText());
 				banco.setUsuario(fieldBdUser.getText());
-
-				Conexao conexao = new Conexao(usuario,textPane);
-				conexao.conectar("shell");
-				bacukp = new Bacukp(textPane);
-				bacukp.mySql(banco);
-				conexao.desconectar();
 				
-				Conexao conexao2 = new Conexao(usuario,textPane);
-				conexao2.conectar("sftp");
-				Download download = new Download(progressBar,textPane);
-				labelDownload.setVisible(true);
-				download.dowloadBackup(conexao2.channelSftp,FieldBdDownload.getText());
-				conexao2.desconectar();
+				Conexao conexao = new Conexao(usuario,textPane);
+				if (conexao.conectar("shell")) {
+					bacukp = new Bacukp(textPane);
+					bacukp.mySql(banco);
+					conexao.desconectar();
+					
+					Conexao conexao2 = new Conexao(usuario,textPane);
+					if (conexao2.conectar("sftp")) {
+						Download download = new Download(progressBar,textPane);
+						labelDownload.setVisible(true);
+						download.dowloadBackup(conexao2.channelSftp,FieldBdDownload.getText());
+						conexao2.desconectar();
+					}
+				}
+				
 				
 			}
 		}).start();
@@ -306,16 +309,15 @@ public class Dados {
 	
 	private boolean verifica(){
 
-		if(fielServerHost.getText().equals("") || fielServerHost.getText()==null ||
-			fieldServerKayPar.getText().equals("")||fieldServerKayPar.getText()==null ||
-			fieldServerUser.getText().equals("")||fieldServerUser.getText()==null||
-			fieldBdBase.getText().equals("")||fieldBdBase.getText()==null||
-			fieldBdHost.getText().equals("")||fieldBdHost.getText()==null||
-			fieldServerPorta.getText().equals("")||fieldServerPorta.getText()==null||
-			fieldBdPassword.getText().equals("")||fieldBdPassword.getText()==null||
-			fieldBdUser.getText().equals("")||fieldBdUser.getText()==null||
-			FieldBdDownload.getText().equals("")||FieldBdDownload.getText()==null){
-			
+		if( fielServerHost.getText().equals("")   || fielServerHost.getText()==null    ||
+			fieldServerKayPar.getText().equals("")|| fieldServerKayPar.getText()==null ||
+			fieldServerUser.getText().equals("")  || fieldServerUser.getText()==null   ||
+			fieldBdBase.getText().equals("")	  || fieldBdBase.getText()==null	   ||
+			fieldBdHost.getText().equals("")      || fieldBdHost.getText()==null	   ||
+			fieldServerPorta.getText().equals("") || fieldServerPorta.getText()==null  ||
+			fieldBdPassword.getText().equals("")  || fieldBdPassword.getText()==null   ||
+			fieldBdUser.getText().equals("")      || fieldBdUser.getText()==null	   ||
+			FieldBdDownload.getText().equals("")  || FieldBdDownload.getText()==null){
 			
 			Util.alerta("Por favor,preencha todos os campos", Util.ALERTA);
 			return false;
